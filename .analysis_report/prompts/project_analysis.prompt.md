@@ -22,35 +22,16 @@ The agent should download these files from the repository:
 
 ```bash
 # Example: If the prompt is at:
-# https://github.com/jeffhigham-f3/repo_analyzer_ai/blob/main/prompts/project_analysis.prompt.md
+# https://github.com/jeffhigham-f3/repo_analyzer_ai/blob/main/.analysis_report/prompts/project_analysis.prompt.md
 # 
 # The agent should download:
 # https://raw.githubusercontent.com/jeffhigham/repo_analyzer_ai/main/.analysis_report/
 # https://raw.githubusercontent.com/jeffhigham/repo_analyzer_ai/main/templates/project_analysis.template.md
 ```
 
-### **File Structure Required:**
-```
-.analysis_report/
-├── __init__.py
-├── config.py
-├── repo_analyzer.py
-├── git_analyzer.py
-├── feature_mapper.py
-├── developer_analyzer.py
-├── risk_assessor.py
-├── report_generator.py
-├── analyze_project.py
-└── requirements.txt
-
-templates/
-└── project_analysis.template.md
-```
 
 ### **Agent Actions Required:**
 1. **Download Files**: Fetch all required files from the repository
-2. **Install Dependencies**: Ensure PyYAML and other requirements are available
-3. **Execute Analysis**: Run the analysis system on the current project
 4. **Generate Report**: Create the comprehensive analysis report
 
 ## Repository Access Instructions
@@ -63,11 +44,10 @@ templates/
 
 ### **Example:**
 If this prompt is located at:
-`https://github.com/jeffhigham-f3/repo_analyzer_ai/blob/main/prompts/project_analysis.prompt.md`
+`https://github.com/jeffhigham-f3/repo_analyzer_ai/blob/main/prompts/.analysis_report/project_analysis.prompt.md`
 
 The agent should download from:
 - `https://raw.githubusercontent.com/jeffhigham-f3/repo_analyzer_ai/main/.analysis_report/`
-- `https://raw.githubusercontent.com/jeffhigham-f3/repo_analyzer_ai/main/templates/`
 
 ## Objective
 Generate a comprehensive, consistent project analysis report based on repository structure, git history, and project documentation. This report should provide actionable insights for project planning, team assessment, and technical debt evaluation, organized by stakeholder hierarchy.
@@ -108,9 +88,9 @@ Generate a comprehensive, consistent project analysis report based on repository
 
 ### 2. Time Estimation Framework
 - **Complexity Categories**:
-  - **Low**: Simple UI changes, bug fixes, documentation updates (0.5-2 hours per commit)
-  - **Medium**: New components, API endpoints, moderate refactoring (2-6 hours per commit)
-  - **High**: Complex algorithms, architectural changes, major integrations (6-12+ hours per commit)
+  - **Low**: Simple UI changes, bug fixes, documentation updates 
+  - **Medium**: New components, API endpoints, moderate refactoring
+  - **High**: Complex algorithms, architectural changes, major integrations
 - **Estimation Method**: 
   - Count commits per feature
   - Apply complexity multiplier based on feature type
@@ -179,86 +159,10 @@ Generate a comprehensive, consistent project analysis report based on repository
    - Resource allocation recommendations
    - Timeline optimization strategies
 
-## Python Analysis Code Requirements
-
-### Code Organization
-- **Directory**: Use existing code in `.analysis_report/` directory as a starting point
-- **Modular Structure**: Maintain separate modules for different analysis types
-- **Configuration**: Use centralized configuration for analysis parameters
-- **Output Generation**: Automated report generation from analysis results
-
-### Required Python Modules
-
-#### 1. **Repository Analyzer** (`.analysis_report/repo_analyzer.py`)
-- Project structure scanning
-- Technology stack identification
-- Configuration file parsing
-- Architecture pattern detection
-
-#### 2. **Git History Analyzer** (`.analysis_report/git_analyzer.py`)
-- Commit statistics extraction
-- Author contribution analysis
-- Feature timeline mapping
-- Commit pattern categorization
-
-#### 3. **Feature Mapper** (`.analysis_report/feature_mapper.py`)
-- Feature identification logic
-- Complexity assessment algorithms
-- Time estimation calculations
-- Business value mapping
-
-#### 4. **Developer Analyzer** (`.analysis_report/developer_analyzer.py`)
-- Developer skill assessment
-- Contribution pattern analysis
-- Knowledge concentration calculation
-- Team dynamics evaluation
-
-#### 5. **Risk Assessor** (`.analysis_report/risk_assessor.py`)
-- Technical debt identification
-- Risk probability calculation
-- Mitigation strategy generation
-- Business impact assessment
-
-#### 6. **Report Generator** (`.analysis_report/report_generator.py`)
-- Template population
-- Data formatting and validation
-- Stakeholder-specific content generation
-- Output file creation
-
-#### 7. **Main Analysis Script** (`.analysis_report/analyze_project.py`)
-- Orchestrates all analysis modules
-- Manages data flow between components
-- Handles error cases and validation
-- Generates final report
-
-### Code Quality Requirements
-- **Error Handling**: Graceful handling of missing data and edge cases
-- **Validation**: Data consistency checks and confidence scoring
-- **Documentation**: Clear docstrings and inline comments
-- **Testing**: Unit tests for critical analysis functions
-- **Configuration**: Environment-specific settings and parameters
-
-### Code Modification Guidelines
-**When to Modify Existing Code:**
-- Repository has unique characteristics not covered by existing analyzers
-- Performance issues with large repositories
-- Missing technology stack or architecture patterns
-- Repository-specific commit patterns or workflows
-- Specialized file types or project structures
-
-**How to Modify Code:**
-- Preserve the existing module structure and interfaces
-- Add new methods rather than completely rewriting existing ones
-- Document all changes and their rationale
-- Test modifications with the specific repository
-- Maintain backward compatibility where possible
-
-**Modification Examples:**
-- Add new technology stack detectors for specific frameworks
-- Enhance feature mapping for repository-specific patterns
-- Optimize Git analysis for large commit histories
-- Add repository-specific risk assessment criteria
-- Customize complexity thresholds for project type
+## Code Generation
+   - **Temporary Code Directory** - You can generate temporary code in `.analysis_report/source` directory.
+   - **Clean Up** - Clean up the temporary code after completing the analysis.
+   - **Ask If Unsure** - Be very conservative when generating code or installing remote dependencies. Ask for confirmation if unsure.
 
 ### Data Processing Requirements
 - **Git Data**: Efficient parsing of large git histories

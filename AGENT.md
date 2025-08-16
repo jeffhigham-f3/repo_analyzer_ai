@@ -7,8 +7,7 @@
 ## 🚀 Quick Start Instructions
 
 1. **Download the Analysis System**: Fetch the complete project analysis system from this repository
-2. **Execute Analysis**: Run the analysis on the current project using the downloaded system
-3. **Generate Report**: Create a comprehensive stakeholder-focused analysis report
+2. **Generate Report**: Create a comprehensive stakeholder-focused analysis report
 
 ## ⚠️ CRITICAL SAFETY CONSTRAINTS
 
@@ -37,38 +36,17 @@
 ## 📋 What You Need to Download
 
 ### **Required Files:**
-- `.analysis_report/` directory (complete Python analysis system)
-- `templates/project_analysis.template.md` (report template)
-- `prompts/project_analysis.prompt.md` (detailed analysis instructions)
+- `.analysis_report/` directory.
+- `.analysis_report/templates/project_analysis.template.md` (report template)
+- `.analysis_report/prompts/project_analysis.prompt.md` (detailed analysis instructions)
 
-### **File Structure:**
-```
-.analysis_report/
-├── __init__.py
-├── config.py
-├── repo_analyzer.py
-├── git_analyzer.py
-├── feature_mapper.py
-├── developer_analyzer.py
-├── risk_assessor.py
-├── report_generator.py
-├── analyze_project.py
-└── requirements.txt
-└──templates/
-        └── project_analysis.template.md
-    └──prompts/
-        └── project_analysis.prompt.md
-```
 
 ## 🔧 Setup Steps
 
 1. **Check Existing Directory**: If `.analysis_report/` exists, STOP and ask user to confirm overwriting
 2. **Download System**: Fetch all required files from this repository
-3. **Verify Dependencies**: Check if PyYAML and pathlib2 are available (DO NOT install in current project)
-4. **Execute Analysis**: Run `python .analysis_report/analyze_project.py . --save-data`
 
 ## 📖 Detailed Instructions
-
 **IMPORTANT**: All detailed analysis instructions, report requirements, stakeholder hierarchy, and methodology are contained in `.analysis_report/prompts/project_analysis.prompt.md`.
 
 **After downloading the system, refer to that file for:**
