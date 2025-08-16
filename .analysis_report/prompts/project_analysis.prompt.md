@@ -6,13 +6,12 @@
 
 ### **For AI Agents:**
 1. **Fetch the Analysis System**: The agent should first fetch the complete project analysis system from the repository
-2. **Download Required Files**: Get all necessary Python modules and templates
-3. **Execute Analysis**: Run the analysis on the current project using the downloaded system
+2. **Execute Analysis**: Run the analysis on the current project using the downloaded system
 
 ### **Required Repository Files:**
 The agent needs to download these files from the repository:
-- `.analysis_report/` directory (all Python modules)
-- `templates/project_analysis.template.md`
+- `.analysis_report/`
+- `.analysis_report/templates/project_analysis.template.md`
 - This prompt file for reference
 
 ## AI Agent Implementation Guide
@@ -215,7 +214,6 @@ Generate a comprehensive, consistent project analysis report based on repository
 
 ### **Phase 0: System Setup**
 1. **Fetch Analysis System**: Download the complete `.analysis_report/` directory from the repository
-2. **Verify Dependencies**: Ensure required Python packages are available
 3. **Prepare Environment**: Set up the analysis system in the current project
 
 ### **Phase 1: Initial Analysis**
@@ -268,3 +266,55 @@ Generate a comprehensive, consistent project analysis report based on repository
 - **Incremental Testing**: Each modification is tested with real repository data
 - **Real-World Validation**: Code improvements are driven by actual analysis needs
 - **Documented Evolution**: Clear record of what changed and why
+
+
+---
+
+## Template Usage Instructions
+
+### How to Use This Template
+
+1. **Replace Placeholders**: Replace all `[PLACEHOLDER_TEXT]` with actual project data
+2. **Expand N Placeholders**: Convert `[FEATURE_N]` style placeholders to numbered items based on analysis
+3. **Customize Sections**: Add or remove sections based on project needs
+4. **Adjust Complexity Levels**: Modify complexity categories and hour estimates
+5. **Update Technology Stack**: Replace with actual technologies used
+6. **Modify Recommendations**: Customize recommendations for your project type
+
+### N Placeholder Expansion Guide
+
+**For Dynamic Lists:**
+- **Features**: If you find 5 features, replace `[FEATURE_N]` with `[FEATURE_1]` through `[FEATURE_5]`
+- **Tickets**: If you have 3 tickets, replace `[TICKET_N]` with `[TICKET_1]`, `[TICKET_2]`, `[TICKET_3]`
+- **Developers**: If you have 2 secondary developers, expand `[SECONDARY_DEV_N]` accordingly
+
+**Example Expansion:**
+```
+Original: [FEATURE_N] - [HOURS] hours
+Expanded: [FEATURE_1] - [HOURS] hours
+         [FEATURE_2] - [HOURS] hours
+         [FEATURE_3] - [HOURS] hours
+```
+
+**Table Adjustments:**
+- Add or remove table rows to match the actual number of items
+- Ensure all placeholder references are updated consistently
+- Remove any unused placeholder sections
+
+### Required Data Collection
+
+Before using this template, gather the following information:
+
+- Git commit history analysis
+- Project structure examination
+- Developer contribution analysis
+- Feature complexity assessment
+- Technology stack details
+- Timeline information
+
+### Customization Tips
+
+- **For Mobile Apps**: Emphasize platform-specific features and performance
+- **For Web Applications**: Focus on browser compatibility and responsive design
+- **For Enterprise Software**: Include security, scalability, and compliance sections
+- **For Open Source**: Add community metrics and contribution analysis
