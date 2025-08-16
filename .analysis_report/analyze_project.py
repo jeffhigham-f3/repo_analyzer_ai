@@ -161,9 +161,9 @@ class ProjectAnalyzer:
             total_hours = 0
             
             for feature in features:
-                complexity = feature.get('complexity', 'medium')
+                complexity = getattr(feature, 'complexity', 'medium')
                 complexity_counts[complexity] += 1
-                total_hours += feature.get('estimated_hours', 0)
+                total_hours += getattr(feature, 'estimated_hours', 0)
             
             self.analysis_data['feature_complexity'] = {
                 'counts': complexity_counts,
@@ -203,15 +203,15 @@ class ProjectAnalyzer:
         # Factor 2: Feature completion
         features = self.analysis_data.get('features', [])
         if features:
-            completed = len([f for f in features if f.get('status') == 'completed'])
+            completed = len([f for f in features if getattr(f, 'status', 'unknown') == 'completed'])
             completion_rate = completed / len(features)
             score += completion_rate
             factors += 1
         
         # Factor 3: Risk level
         risk_assessment = self.analysis_data.get('risk_assessment', {})
-        if risk_assessment and 'overall_risk_level' in risk_assessment:
-            risk_level = risk_assessment['overall_risk_level']
+        if risk_assessment and hasattr(risk_assessment, 'overall_risk_level'):
+            risk_level = risk_assessment.overall_risk_level
             risk_scores = {'Low': 1.0, 'Medium': 0.6, 'High': 0.2}
             score += risk_scores.get(risk_level, 0.6)
             factors += 1

@@ -13,7 +13,7 @@ from dataclasses import dataclass
 import json
 import yaml
 
-from .config import AnalysisConfig, TechnologyStackConfig
+from config import AnalysisConfig, TechnologyStackConfig
 
 
 @dataclass

@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from collections import defaultdict, Counter
 import json
 
-from .config import AnalysisConfig, GitAnalysisConfig
+from config import AnalysisConfig, GitAnalysisConfig
 
 
 @dataclass
@@ -274,7 +274,7 @@ class GitAnalyzer:
                 try:
                     date = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
                 except ValueError:
-                    date = datetime.now()
+                    date = datetime.now(timezone.utc)
                 
                 # Parse file statistics
                 files_changed = 0

@@ -11,7 +11,7 @@ from typing import Dict, List, Any
 from pathlib import Path
 import re
 
-from .config import AnalysisConfig, ReportConfig
+from config import AnalysisConfig, ReportConfig
 
 
 class ReportGenerator:
@@ -140,11 +140,11 @@ class ReportGenerator:
         
         # Feature counts
         total_features = len(features)
-        high_priority = len([f for f in features if f.priority == 'High'])
-        medium_priority = len([f for f in features if f.priority == 'Medium'])
-        low_priority = len([f for f in features if f.priority == 'Low'])
-        completed = len([f for f in features if f.status == 'completed'])
-        in_progress = len([f for f in features if f.status == 'in_progress'])
+        high_priority = len([f for f in features if f.get('priority', 'Medium') == 'High'])
+        medium_priority = len([f for f in features if f.get('priority', 'Medium') == 'Medium'])
+        low_priority = len([f for f in features if f.get('priority', 'Medium') == 'Low'])
+        completed = len([f for f in features if f.get('status', 'unknown') == 'completed'])
+        in_progress = len([f for f in features if f.get('status', 'unknown') == 'in_progress'])
         
         # Calculate percentages
         high_priority_pct = (high_priority / total_features * 100) if total_features > 0 else 0
@@ -182,8 +182,22 @@ class ReportGenerator:
         
         # Developer counts
         total_contributors = len(developer_profiles)
-        primary_contributors = [d for d in developer_profiles if d.business_value in ['Critical', 'High']]
-        active_developers = [d for d in developer_profiles if d.last_contribution > datetime.now() - timedelta(days=90)]
+        primary_contributors = [d for d in developer_profiles if d.get('business_value', 'Medium') in ['Critical', 'High']]
+        # Parse last_contribution dates and filter active developers
+        active_developers = []
+        for d in developer_profiles:
+            last_contribution = d.get('last_contribution', '')
+            if isinstance(last_contribution, str):
+                try:
+                    # Parse ISO format string back to datetime
+                    parsed_date = datetime.fromisoformat(last_contribution.replace('Z', '+00:00'))
+                    if parsed_date > datetime.now() - timedelta(days=90):
+                        active_developers.append(d)
+                except:
+                    continue
+            elif isinstance(last_contribution, datetime):
+                if last_contribution > datetime.now() - timedelta(days=90):
+                    active_developers.append(d)
         
         # Knowledge concentration
         knowledge_concentration = len(primary_contributors) / total_contributors if total_contributors > 0 else 0
@@ -312,16 +326,29 @@ class ReportGenerator:
         
         # Analysis period
         commits = analysis_data.get('commits', [])
+        duration = 0  # Initialize duration
         if commits:
-            dates = [c.date for c in commits if hasattr(c, 'date')]
+            dates = [c.get('date') for c in commits if 'date' in c]
             if dates:
-                start_date = min(dates)
-                end_date = max(dates)
-                duration = (end_date - start_date).days
+                # Parse string dates back to datetime objects for calculation
+                parsed_dates = []
+                for date_str in dates:
+                    if isinstance(date_str, str):
+                        try:
+                            parsed_dates.append(datetime.fromisoformat(date_str.replace('Z', '+00:00')))
+                        except:
+                            continue
+                    else:
+                        parsed_dates.append(date_str)
                 
-                content = content.replace('[START_DATE]', start_date.strftime('%B %d, %Y'))
-                content = content.replace('[END_DATE]', end_date.strftime('%B %d, %Y'))
-                content = content.replace('[DURATION]', f"{duration} days")
+                if parsed_dates:
+                    start_date = min(parsed_dates)
+                    end_date = max(parsed_dates)
+                    duration = (end_date - start_date).days
+                    
+                    content = content.replace('[START_DATE]', start_date.strftime('%B %d, %Y'))
+                    content = content.replace('[END_DATE]', end_date.strftime('%B %d, %Y'))
+                    content = content.replace('[DURATION]', f"{duration} days")
         
         # Total commits
         total_commits = len(commits) if commits else 0
@@ -364,7 +391,7 @@ class ReportGenerator:
         # Factor 2: Feature completion
         features = analysis_data.get('features', [])
         if features:
-            completed = len([f for f in features if f.status == 'completed'])
+            completed = len([f for f in features if f.get('status', 'unknown') == 'completed'])
             completion_rate = completed / len(features) if features else 0
             health_score += completion_rate * 0.3
         
@@ -399,7 +426,7 @@ class ReportGenerator:
         # Feature delivery
         features = analysis_data.get('features', [])
         if features:
-            completed = len([f for f in features if f.status == 'completed'])
+            completed = len([f for f in features if f.get('status', 'unknown') == 'completed'])
             if completed > len(features) * 0.7:
                 strengths.append("Strong feature delivery")
         
@@ -427,14 +454,14 @@ class ReportGenerator:
         # Knowledge concentration
         developer_profiles = analysis_data.get('developer_profiles', [])
         if developer_profiles:
-            primary_contributors = [d for d in developer_profiles if d.business_value in ['Critical', 'High']]
+            primary_contributors = [d for d in developer_profiles if d.get('business_value', 'Medium') in ['Critical', 'High']]
             if len(primary_contributors) / len(developer_profiles) > 0.7:
                 concerns.append("High knowledge concentration")
         
         # Technical debt
         commits = analysis_data.get('commits', [])
         if commits:
-            refactor_commits = sum(1 for c in commits if 'refactor' in c.message.lower())
+            refactor_commits = sum(1 for c in commits if 'refactor' in c.get('message', '').lower())
             if refactor_commits > len(commits) * 0.3:
                 concerns.append("Significant technical debt")
         
@@ -457,7 +484,7 @@ class ReportGenerator:
         # Testing coverage
         features = analysis_data.get('features', [])
         if features:
-            test_features = [f for f in features if 'test' in f.name.lower()]
+            test_features = [f for f in features if 'test' in f.get('name', '').lower()]
             if len(test_features) < len(features) * 0.2:
                 opportunities.append("Increase testing coverage")
         
@@ -479,13 +506,13 @@ class ReportGenerator:
         
         # Risk mitigation
         risk_assessment = analysis_data.get('risk_assessment', {})
-        if risk_assessment and risk_assessment.get('overall_risk_level') == 'High':
+        if risk_assessment and risk_assessment.get('overall_risk_level', 'Medium') == 'High':
             recommendations.append("Prioritize risk mitigation strategies")
         
         # Resource allocation
         developer_profiles = analysis_data.get('developer_profiles', [])
         if developer_profiles:
-            primary_contributors = [d for d in developer_profiles if d.business_value in ['Critical', 'High']]
+            primary_contributors = [d for d in developer_profiles if d.get('business_value', 'Medium') in ['Critical', 'High']]
             if len(primary_contributors) < 2:
                 recommendations.append("Consider expanding core development team")
         
@@ -517,8 +544,8 @@ class ReportGenerator:
         if not features:
             return "Unknown"
         
-        completed = len([f for f in features if f.status == 'completed'])
-        in_progress = len([f for f in features if f.status == 'in_progress'])
+        completed = len([f for f in features if f.get('status', 'unknown') == 'completed'])
+        in_progress = len([f for f in features if f.get('status', 'unknown') == 'in_progress'])
         
         if completed > len(features) * 0.8:
             return "Near Completion"
@@ -549,7 +576,7 @@ class ReportGenerator:
         if not features:
             return "Project value to be determined"
         
-        high_value_features = [f for f in features if f.business_value in ['Critical', 'High']]
+        high_value_features = [f for f in features if f.get('business_value', 'Medium') in ['Critical', 'High']]
         if high_value_features:
             return f"Project delivers {len(high_value_features)} high-value features with significant business impact"
         else:
@@ -566,7 +593,7 @@ class ReportGenerator:
             return "Low"
         
         impact_scores = {'Critical': 5, 'High': 4, 'Medium': 3, 'Low': 2, 'Minimal': 1}
-        total_score = sum(impact_scores.get(f.business_value, 3) for f in features)
+        total_score = sum(impact_scores.get(f.get('business_value', 'Medium'), 3) for f in features)
         average_score = total_score / len(features)
         
         if average_score >= 4.0:
@@ -588,10 +615,10 @@ class ReportGenerator:
         if not risks:
             return "Low"
         
-        high_risks = [r for r in risks if r.risk_score >= 0.7]
+        high_risks = [r for r in risks if r.get('risk_score', 0) >= 0.7]
         if high_risks:
             return "High"
-        elif any(r.risk_score >= 0.4 for r in risks):
+        elif any(r.get('risk_score', 0) >= 0.4 for r in risks):
             return "Medium"
         else:
             return "Low"

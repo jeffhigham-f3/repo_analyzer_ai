@@ -11,8 +11,8 @@ from collections import defaultdict, Counter
 from datetime import datetime, timedelta
 import math
 
-from .config import AnalysisConfig
-from .git_analyzer import CommitInfo, AuthorStats
+from config import AnalysisConfig
+from git_analyzer import CommitInfo, AuthorStats
 
 
 @dataclass

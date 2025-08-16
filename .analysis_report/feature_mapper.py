@@ -11,8 +11,8 @@ from dataclasses import dataclass
 from collections import defaultdict
 from pathlib import Path
 
-from .config import AnalysisConfig
-from .git_analyzer import CommitInfo
+from config import AnalysisConfig
+from git_analyzer import CommitInfo
 
 
 @dataclass

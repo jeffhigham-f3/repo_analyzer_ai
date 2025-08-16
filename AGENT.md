@@ -54,12 +54,10 @@
 ├── report_generator.py
 ├── analyze_project.py
 └── requirements.txt
-
-templates/
-└── project_analysis.template.md
-
-prompts/
-└── project_analysis.prompt.md
+└──templates/
+        └── project_analysis.template.md
+    └──prompts/
+        └── project_analysis.prompt.md
 ```
 
 ## 🔧 Setup Steps
@@ -71,7 +69,7 @@ prompts/
 
 ## 📖 Detailed Instructions
 
-**IMPORTANT**: All detailed analysis instructions, report requirements, stakeholder hierarchy, and methodology are contained in `prompts/project_analysis.prompt.md`.
+**IMPORTANT**: All detailed analysis instructions, report requirements, stakeholder hierarchy, and methodology are contained in `.analysis_report/prompts/project_analysis.prompt.md`.
 
 **After downloading the system, refer to that file for:**
 - Complete analysis methodology

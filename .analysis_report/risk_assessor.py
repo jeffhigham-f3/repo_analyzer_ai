@@ -7,12 +7,12 @@ including technical, team, and business risks.
 
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import math
 
-from .config import AnalysisConfig
-from .git_analyzer import CommitInfo, AuthorStats
-from .feature_mapper import Feature
+from config import AnalysisConfig
+from git_analyzer import CommitInfo, AuthorStats
+from feature_mapper import Feature
 
 
 @dataclass
@@ -132,7 +132,7 @@ class RiskAssessor:
                 description=f"Project contains {len(high_complexity_features)} high-complexity features that may cause delays and quality issues",
                 mitigation_strategy="Break down complex features, increase testing coverage, allocate senior developers",
                 risk_score=risk_score,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -149,7 +149,7 @@ class RiskAssessor:
                 description=f"Technical debt score of {technical_debt_score:.2f} indicates accumulated technical issues",
                 mitigation_strategy="Implement refactoring sprints, improve code review process, establish coding standards",
                 risk_score=technical_debt_score,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -166,7 +166,7 @@ class RiskAssessor:
                 description="Project architecture shows high complexity that may impact maintainability",
                 mitigation_strategy="Document architecture decisions, create onboarding guides, simplify complex components",
                 risk_score=arch_complexity,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -183,7 +183,7 @@ class RiskAssessor:
                 description=f"Testing coverage of {testing_coverage:.2f} indicates insufficient testing",
                 mitigation_strategy="Implement automated testing, establish testing requirements, increase test coverage",
                 risk_score=1.0 - testing_coverage,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -200,7 +200,7 @@ class RiskAssessor:
                 description="Project has potential dependency and security risks",
                 mitigation_strategy="Regular dependency updates, security scanning, vulnerability monitoring",
                 risk_score=0.6,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -227,7 +227,7 @@ class RiskAssessor:
                 description=f"Knowledge concentration score of {knowledge_concentration:.2f} indicates over-reliance on few developers",
                 mitigation_strategy="Cross-training, documentation, knowledge sharing sessions, pair programming",
                 risk_score=knowledge_concentration,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -244,7 +244,7 @@ class RiskAssessor:
                 description="Team shows signs of instability with frequent changes",
                 mitigation_strategy="Improve retention, establish clear roles, provide growth opportunities",
                 risk_score=1.0 - team_stability,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -261,7 +261,7 @@ class RiskAssessor:
                 description=f"Team has skill gaps in areas: {', '.join(skill_gaps)}",
                 mitigation_strategy="Training programs, hiring, knowledge transfer, external consultants",
                 risk_score=0.6,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -278,7 +278,7 @@ class RiskAssessor:
                 description="Commit messages and communication patterns indicate potential communication issues",
                 mitigation_strategy="Improve documentation, establish communication protocols, regular team meetings",
                 risk_score=1.0 - communication_score,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -302,7 +302,7 @@ class RiskAssessor:
                 description="Project shows signs of scope creep with expanding feature set",
                 mitigation_strategy="Strict change control, regular scope reviews, stakeholder alignment",
                 risk_score=scope_creep_score,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -319,7 +319,7 @@ class RiskAssessor:
                 description="Project timeline shows significant risks of delays",
                 mitigation_strategy="Resource reallocation, scope reduction, stakeholder communication",
                 risk_score=timeline_risk,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -336,7 +336,7 @@ class RiskAssessor:
                 description="Project may face resource constraints affecting delivery",
                 mitigation_strategy="Resource planning, prioritization, external support",
                 risk_score=resource_risk,
-                detection_date=datetime.now(),
+                detection_date=datetime.now(timezone.utc),
                 status="identified"
             ))
         
@@ -444,7 +444,7 @@ class RiskAssessor:
             return 0.0
         
         # Analyze recent activity
-        recent_cutoff = datetime.now() - timedelta(days=30)
+        recent_cutoff = datetime.now(timezone.utc) - timedelta(days=30)
         recent_commits = [c for c in commits if c.date > recent_cutoff]
         
         if not recent_commits:
